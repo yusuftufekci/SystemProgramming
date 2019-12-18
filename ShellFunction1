@@ -1,0 +1,23 @@
+echo "Conversion of Binary to Decimal"
+
+bino=$1
+len=${#bino}
+i=1
+pow=$((len - 1 ))
+while [ $i -le $len ]
+do
+n=`echo $bino | awk '{ printf substr( $0,'$i',1 )}' `
+j=1
+p=1
+while [ $j -le $pow ]
+do
+p=$(( p * 2 ))
+j=$(( j + 1 ))
+done
+dec=$(( n * p ))
+findec=$(( findec + dec ))
+pow=$((pow - 1 ))
+i=$(( i + 1 ))
+done
+echo "Decimal number is:"$findec
+
