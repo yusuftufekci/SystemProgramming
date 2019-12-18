@@ -1,0 +1,2 @@
+find /home/$USER -user $USER -type f -name "$1" -exec mv {} ../Desktop \;
+
