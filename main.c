@@ -37,6 +37,42 @@ int readParseLine(char* args[], char line[]){
     processLine(args,line);
     return 1;
 }
+ void sortTheFile(FILE *file,int size){
+		
+	    	int a[size];
+	    	int i;
+		
+	    	for (i = 0; i <sizeof(a)/sizeof(a[0]) ; i++)
+	    	{
+	     	   fscanf(file, "%d", &a[i]);
+	   	 }
+		
+		for (int l=0;l<sizeof(a)/sizeof(a[0]);l++){
+		printf("%d\n",a[l]);
+		}
+	    	
+	    	qsort(a,sizeof(a)/sizeof(a[0]),sizeof(int),cmpfunc);
+		printf("\n");
+	     	for (int l=0;l<sizeof(a)/sizeof(a[0]);l++){
+		printf("%d\n",a[l]);
+	}
+  int findTheLinesNumber(FILE*file2){
+
+
+		int count=0;	   	
+		int num;
+		while(fscanf(file2,"%d",&num)>0){
+		count=count+1;
+		}
+		fclose(file2);
+		return count;
+
+
+
+
+
+}
+
 
 
 int main(){
