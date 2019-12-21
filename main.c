@@ -56,6 +56,7 @@ int readParseLine(char* args[], char line[]){
 	     	for (int l=0;l<sizeof(a)/sizeof(a[0]);l++){
 		printf("%d\n",a[l]);
 	}
+ }
   int findTheLinesNumber(FILE*file2){
 
 
