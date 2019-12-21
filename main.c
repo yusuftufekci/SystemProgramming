@@ -74,16 +74,32 @@ int readParseLine(char* args[], char line[]){
 }
 
 
-
 int main(){
+    welcomeScreen();
     char* args[10];
     char line[100];
 
     while(readParseLine(args,line)){
 
+    	char* functions [] = {"help","convert_to_binary","copy_to_desktop"};
+        char *command = malloc(1000*sizeof(char));
+
         pid_t childPid = fork();
-        if(childPid == 0){      
-          // run
+        if(childPid == 0){
+	       if (!strcmp(*args,functions[0])){
+                   printHelp();
+	        }
+	 	else if (!strcmp(args[0],functions[1])){
+                    sprintf(command,"%s %s %s","sh ShellFunction1.sh",args[1],args[2]);
+                    system(command);
+	        }
+                else if (!strcmp(args[0],functions[2])){
+                    sprintf(command,"%s %s","sh ShellFunction2.sh",args[1]);
+                    system(command);
+                }
+		else {
+	        	execvp(args[0],args);
+	        }
         }
         else {
             waitpid(childPid, 0,0);
