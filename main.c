@@ -37,8 +37,8 @@ int readParseLine(char* args[], char line[]){
     processLine(args,line);
     return 1;
 }
- void sortTheFile(FILE *file,int size){
-		
+void sortTheFile(FILE *file,int size,char b[]){
+		file = fopen(b, "r");
 	    	int a[size];
 	    	int i;
 		
@@ -54,11 +54,12 @@ int readParseLine(char* args[], char line[]){
 	    	qsort(a,sizeof(a)/sizeof(a[0]),sizeof(int),cmpfunc);
 		printf("\n");
 	     	for (int l=0;l<sizeof(a)/sizeof(a[0]);l++){
-		printf("%d\n",a[l]);
-	}
- }
-  int findTheLinesNumber(FILE*file2){
-
+		printf("%d\n",a[l]);		
+		}
+		fclose(file);
+}
+ int findTheLinesNumber(FILE*file2,char c[]){
+		file2 = fopen(c, "r");
 
 		int count=0;	   	
 		int num;
@@ -67,7 +68,7 @@ int readParseLine(char* args[], char line[]){
 		}
 		fclose(file2);
 		return count;
-
+		fclose(file2);
 
 
 
