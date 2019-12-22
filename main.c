@@ -98,7 +98,6 @@ int findTheLinesNumber(FILE*file2,char c[]){
         while(fscanf(file2,"%d",&num)>0){
         count=count+1;
         }
-        fclose(file2);
         return count;
         fclose(file2);
 }
