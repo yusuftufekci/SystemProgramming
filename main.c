@@ -106,7 +106,7 @@ void sortTheFile(char b[]){
 
 void createNotepad(char* inputName){
     if (inputName == NULL) 
-       printf("Must enter file name!!");
+       printf("Must enter file name!!\n");
     
     
     else {
@@ -149,11 +149,8 @@ int main(){
         
         pid_t childPid = fork();
         if(childPid == 0){
-            if(!strcmp(*args,functions[5])){
-                puts("Terminating...");
-                kill(childPid, SIGKILL);
-            }
-	        else if (!strcmp(*args,functions[0])){
+
+	        if (!strcmp(*args,functions[0])){
                 printHelp();
 	        }
 	 		else if (!strcmp(args[0],functions[1])){
@@ -164,11 +161,19 @@ int main(){
                 sprintf(command,"%s %s %s","sh ShellFunction2.sh",args[1],args[2]);
                 system(command);
             }
-            else if (!strcmp(args[0],functions[3])){
-                createNotepad(args[1]);
+           else if (!strcmp(args[0],functions[3])){
+                sprintf(command,"%s %s","sh ShellFunction3.sh",args[1]);
+                system(command);
             }
             else if (!strcmp(args[0],functions[4])){
+                createNotepad(args[1]);
+            }
+            else if (!strcmp(args[0],functions[5])){
                 sortTheFile(args[1]);
+            }
+            else if(!strcmp(*args,functions[6])){
+                puts("Terminating...");
+                kill(childPid, SIGKILL);
             }
 	      	else
                 printf("EY: command not found: %s\n",args[0]);
