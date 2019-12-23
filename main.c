@@ -66,6 +66,7 @@ void welcomeScreen(){
 int cmpfunc (const void * a, const void * b)
     {
     	// Compare function used by qsort
+        //We should take that function for use qsort function
     	return ( *(int*)a - *(int*)b );
     }
 
