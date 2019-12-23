@@ -63,6 +63,12 @@ void welcomeScreen(){
     puts("|                                         |");
     puts("*******************************************");
 }
+int cmpfunc (const void * a, const void * b)
+    {
+    	// Compare function used by qsort
+    	return ( *(int*)a - *(int*)b );
+    }
+
 
 void sortTheFile(FILE *file,int size,char b[]){
         file = fopen(b, "r");
