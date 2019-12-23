@@ -42,13 +42,14 @@ int readParseLine(char* args[], char line[]){
 }
 
 void printHelp(){
-    puts("***********List of Commands supported***************\n"
-        "|\t#convert_to_binary arg1(type) arg2(number) |\n"
-        "|\t#copy_to_desktop arg1(file name)\t   |\n"
-        "|\t#notepad\t\t\t\t   |\n"
-        "|\t#sort_file arg1 (file name)\t\t   |\n"
-        "|\t#exit\t\t\t\t\t   |");
-    puts("****************************************************");
+    puts("\n***********List of Commands supported***************\n"
+        "|  #convert_to_binary arg1(type) arg2(number)\t   |\n"
+        "|  #compare_files arg1(file1 name) arg2(file2 name)|\n"
+        "|  #copy_to_desktop arg1(file name)\t\t   |\n"
+        "|  #notepad\t\t\t\t\t   |\n"
+        "|  #sort_file arg1 (file name)\t\t\t   |\n"
+        "|  #exit\t\t\t\t\t   |");
+    puts("****************************************************\n");
 }
 
 void welcomeScreen(){
@@ -143,7 +144,7 @@ int main(){
 
     while(readParseLine(args,line)){
 
-    	char* functions [] = {"help","convert_to_binary","copy_to_desktop","notepad","sort_file","exit"};
+    	char* functions [] = {"help","convert_to_binary","compare_files","copy_to_desktop","notepad","sort_file","exit"};
         char* command = malloc(1000*sizeof(char));
         
         pid_t childPid = fork();
@@ -160,7 +161,7 @@ int main(){
                 system(command);
 	        }
             else if (!strcmp(args[0],functions[2])){
-                sprintf(command,"%s %s","sh ShellFunction2.sh",args[1]);
+                sprintf(command,"%s %s %s","sh ShellFunction2.sh",args[1],args[2]);
                 system(command);
             }
             else if (!strcmp(args[0],functions[3])){
@@ -180,6 +181,4 @@ int main(){
     }
     return 1;
 }
-
-
 
