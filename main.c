@@ -71,39 +71,38 @@ int cmpfunc (const void * a, const void * b)
     }
 
 
-void sortTheFile(FILE *file,int size,char b[]){
-        file = fopen(b, "r");
-            int a[size];
-            int i;
-        
-            for (i = 0; i <sizeof(a)/sizeof(a[0]) ; i++)
-            {
-               fscanf(file, "%d", &a[i]);
-         }
-        
-        for (int l=0;l<sizeof(a)/sizeof(a[0]);l++){
-        printf("%d\n",a[l]);
-        }
-            
-            qsort(a,sizeof(a)/sizeof(a[0]),sizeof(int),cmpfunc);
-        printf("\n");
-            for (int l=0;l<sizeof(a)/sizeof(a[0]);l++){
-        printf("%d\n",a[l]);
-        }
-        fclose(file);
+ void sortTheFile(FILE *file,char b[]){
+		file = fopen(b, "r");
+		int count=0;	   	
+		int num;
+		while(fscanf(file,"%d",&num)>0){
+		count=count+1;
+		}
+		fclose(file);
+			
+	    	int a[count];
+	    	int i;
+		
+		file = fopen(b, "r");	
+	    	for (i = 0; i <sizeof(a)/sizeof(a[0]) ; i++)
+	    	{
+	     	   fscanf(file, "%d", &a[i]);
+	   	 }
+		
+		for (int l=0;l<sizeof(a)/sizeof(a[0]);l++){
+		printf("%d\n",a[l]);
+		}
+	    	
+	    	qsort(a,sizeof(a)/sizeof(a[0]),sizeof(int),cmpfunc);
+		printf("\n");
+	     	for (int l=0;l<sizeof(a)/sizeof(a[0]);l++){
+		printf("%d\n",a[l]);
+		
+		}
+		fclose(file);
+
 }
 
-int findTheLinesNumber(FILE*file2,char c[]){
-        file2 = fopen(c, "r");
-
-        int count=0;
-        int num;
-        while(fscanf(file2,"%d",&num)>0){
-        count=count+1;
-        }
-        return count;
-        fclose(file2);
-}
    
 
 void createNotepad(char* inputName){
