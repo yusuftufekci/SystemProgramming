@@ -1,0 +1,25 @@
+input=$1
+input2=$2
+input1Lines=0
+input2Lines=0
+while read LINE;
+do 
+   input1Lines=$(($input1Lines+1))   
+   echo "$LINE"
+done <$input	
+echo  "$input1Lines"
+while read LINE;
+do 
+   input2Lines=$(($input2Lines+1))  
+   echo "$LINE"
+done <$input2
+echo  "$input2Lines"
+if [ $input1Lines -gt $input2Lines ]
+then
+echo "$input($input1Lines) > $input2($input2Lines)"
+elif [ $input1Lines -lt $input2Lines ]
+then
+echo "$input2($input2Lines) > $input($input1Lines)"
+else
+echo "They are equal"
+fi
