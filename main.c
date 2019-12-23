@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <signal.h>
 
 void removeEOL(char line[]){
     int i=0;
@@ -36,11 +37,7 @@ int readParseLine(char* args[], char line[]){
     printf(">");
     readLine(line);
     processLine(args,line);
-
-    if (!strcmp(args[0],"exit")){
-        exit(1);                       // ??? maindeki while döngüsü içinde stack gibi biriktiriyor. 0layınca exit atıyor???
-    }
- 
+     
     return 1;
 }
 
@@ -48,16 +45,15 @@ void printHelp(){
     puts("***********List of Commands supported***************\n"
         "|\t#convert_to_binary arg1(type) arg2(number) |\n"
         "|\t#copy_to_desktop arg1(file name)\t   |\n"
-        "|\t#C function-1\t\t\t\t   |\n"
+        "|\t#Notepad\t\t\t\t   |\n"
         "|\t#C function-2\t\t\t\t   |\n"
-        "|\t#exit\t\t\t\t\t   |\n"
-        "|\t#all other commands in UNIX shell\t   |"); 
+        "|\t#exit\t\t\t\t\t   |");
     puts("****************************************************");
 }
 
 void welcomeScreen(){
-    char* username = getenv("USER"); 
-    printf("@%s\n", username); 
+    char* username = getenv("USER");
+    printf("@%s\n", username);
     puts("*******************************************");
     puts("|                                         |");
     puts("|                                         |");
@@ -85,7 +81,7 @@ void sortTheFile(FILE *file,int size,char b[]){
             qsort(a,sizeof(a)/sizeof(a[0]),sizeof(int),cmpfunc);
         printf("\n");
             for (int l=0;l<sizeof(a)/sizeof(a[0]);l++){
-        printf("%d\n",a[l]);        
+        printf("%d\n",a[l]);
         }
         fclose(file);
 }
@@ -93,7 +89,7 @@ void sortTheFile(FILE *file,int size,char b[]){
 int findTheLinesNumber(FILE*file2,char c[]){
         file2 = fopen(c, "r");
 
-        int count=0;        
+        int count=0;
         int num;
         while(fscanf(file2,"%d",&num)>0){
         count=count+1;
@@ -104,23 +100,59 @@ int findTheLinesNumber(FILE*file2,char c[]){
 }
    
 
+void createNotepad(char* inputName){
+    if (inputName == NULL)
+       printf("Must enter file name!!");
+    
+    
+    else {
+        char data[1000];
+        char fileName[50];
+        char *extension = ".txt";
+        sprintf(fileName,"%s%s",inputName,extension);
+
+        FILE * fPtr;
+
+        fPtr = fopen(fileName, "w");
+
+
+        if(fPtr == NULL){
+            printf("Error\n");
+            exit(EXIT_FAILURE);
+        }
+
+        printf("\n   :");
+        fgets(data, 1000, stdin);
+
+        fputs(data, fPtr);
+
+        fclose(fPtr);
+
+        printf("File created successfully. \n");
+    }
+}
+
 int main(){
-    int temp = 0;
+
     welcomeScreen();
     char* args[10];
     char line[100];
 
     while(readParseLine(args,line)){
 
-        char* functions [] = {"help","convert_to_binary","copy_to_desktop","c_function_1","c_function_2"};
+        char* functions [] = {"help","convert_to_binary","copy_to_desktop","Notepad","c_function_2","exit"};
         char* command = malloc(1000*sizeof(char));
         
         pid_t childPid = fork();
         if(childPid == 0){
-            if (!strcmp(*args,functions[0])){
+            if(!strcmp(*args,functions[5])){
+                puts("Terminating...");
+                kill(childPid, SIGKILL);
+            }
+            else if (!strcmp(*args,functions[0])){
                 printHelp();
             }
-            else if (!strcmp(args[0],functions[1])){
+             else if (!strcmp(args[0],functions[1])){
                 sprintf(command,"%s %s %s","sh ShellFunction1.sh",args[1],args[2]);
                 system(command);
             }
@@ -129,15 +161,13 @@ int main(){
                 system(command);
             }
             else if (!strcmp(args[0],functions[3])){
-                puts("c function-1");
+                createNotepad(args[1]);
             }
             else if (!strcmp(args[0],functions[4])){
                 puts("c function-2");
             }
-
-            else {
-                execvp(args[0],args);
-            }
+              else
+                printf("EY: command not found: %s\n",args[0]);
         }
         else {
             waitpid(childPid, 0,0);
