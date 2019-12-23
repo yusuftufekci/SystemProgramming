@@ -34,7 +34,7 @@ int processLine(char* args[], char line[]){
 
 int readParseLine(char* args[], char line[]){
 
-    printf(">");
+	printf(">");
     readLine(line);
     processLine(args,line);
      
@@ -45,15 +45,15 @@ void printHelp(){
     puts("***********List of Commands supported***************\n"
         "|\t#convert_to_binary arg1(type) arg2(number) |\n"
         "|\t#copy_to_desktop arg1(file name)\t   |\n"
-        "|\t#Notepad\t\t\t\t   |\n"
-        "|\t#C function-2\t\t\t\t   |\n"
+        "|\t#notepad\t\t\t\t   |\n"
+        "|\t#sort_file arg1 (file name)\t\t   |\n"
         "|\t#exit\t\t\t\t\t   |");
     puts("****************************************************");
 }
 
 void welcomeScreen(){
-    char* username = getenv("USER");
-    printf("@%s\n", username);
+    char* username = getenv("USER"); 
+    printf("@%s\n", username); 
     puts("*******************************************");
     puts("|                                         |");
     puts("|                                         |");
@@ -63,51 +63,48 @@ void welcomeScreen(){
     puts("|                                         |");
     puts("*******************************************");
 }
-int cmpfunc (const void * a, const void * b)
-    {
-    	// Compare function used by qsort
-        //We should take that function for use qsort function
-    	return ( *(int*)a - *(int*)b );
-    }
 
-
- void sortTheFile(char b[]){
-	 	FILE *myFile;
-		file = fopen(b, "r");
-		int count=0;	   	
-		int num;
-		while(fscanf(file,"%d",&num)>0){
-		count=count+1;
-		}
-		fclose(file);
-			
-	    	int a[count];
-	    	int i;
-		
-		file = fopen(b, "r");	
-	    	for (i = 0; i <sizeof(a)/sizeof(a[0]) ; i++)
-	    	{
-	     	   fscanf(file, "%d", &a[i]);
-	   	 }
-		
-		for (int l=0;l<sizeof(a)/sizeof(a[0]);l++){
-		printf("%d\n",a[l]);
-		}
-	    	
-	    	qsort(a,sizeof(a)/sizeof(a[0]),sizeof(int),cmpfunc);
-		printf("\n");
-	     	for (int l=0;l<sizeof(a)/sizeof(a[0]);l++){
-		printf("%d\n",a[l]);
-		
-		}
-		fclose(file);
-
+int cmpfunc (const void * a, const void * b){
+    return ( *(int*)a - *(int*)b );
 }
 
-   
+void sortTheFile(char b[]){
+    FILE *file;
+    FILE *writeFile;
+    printf("%s\n",b);
+    file = fopen(b, "r");
+    int count=0;        
+    int num;
+    while(fscanf(file,"%d",&num)>0){
+        count=count+1;
+    }
+    fclose(file);
+            
+    int a[count];
+    int i;
+        
+    file = fopen(b, "r"); 
+    writeFile = fopen("sortedFile.txt", "w"); 
+    for (i = 0; i <sizeof(a)/sizeof(a[0]) ; i++){
+        fscanf(file, "%d", &a[i]);
+    }
+        
+    for (int l=0;l<sizeof(a)/sizeof(a[0]);l++){
+        printf("%d\n",a[l]);
+    }
+            
+    qsort(a,sizeof(a)/sizeof(a[0]),sizeof(int),cmpfunc);
+    printf("\n");
+    for (int l=0;l<sizeof(a)/sizeof(a[0]);l++){
+        printf("%d\n",a[l]);
+        fprintf(writeFile, "%d\n",a[l]);
+    }
+    fclose(file);
+    fclose(writeFile);
+}
 
 void createNotepad(char* inputName){
-    if (inputName == NULL)
+    if (inputName == NULL) 
        printf("Must enter file name!!");
     
     
@@ -146,7 +143,7 @@ int main(){
 
     while(readParseLine(args,line)){
 
-        char* functions [] = {"help","convert_to_binary","copy_to_desktop","Notepad","c_function_2","exit"};
+    	char* functions [] = {"help","convert_to_binary","copy_to_desktop","notepad","sort_file","exit"};
         char* command = malloc(1000*sizeof(char));
         
         pid_t childPid = fork();
@@ -155,13 +152,13 @@ int main(){
                 puts("Terminating...");
                 kill(childPid, SIGKILL);
             }
-            else if (!strcmp(*args,functions[0])){
+	        else if (!strcmp(*args,functions[0])){
                 printHelp();
-            }
-             else if (!strcmp(args[0],functions[1])){
+	        }
+	 		else if (!strcmp(args[0],functions[1])){
                 sprintf(command,"%s %s %s","sh ShellFunction1.sh",args[1],args[2]);
                 system(command);
-            }
+	        }
             else if (!strcmp(args[0],functions[2])){
                 sprintf(command,"%s %s","sh ShellFunction2.sh",args[1]);
                 system(command);
@@ -170,9 +167,9 @@ int main(){
                 createNotepad(args[1]);
             }
             else if (!strcmp(args[0],functions[4])){
-                puts("c function-2");
+                sortTheFile(args[1]);
             }
-              else
+	      	else
                 printf("EY: command not found: %s\n",args[0]);
         }
         else {
@@ -183,4 +180,6 @@ int main(){
     }
     return 1;
 }
+
+
 
