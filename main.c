@@ -71,7 +71,8 @@ int cmpfunc (const void * a, const void * b)
     }
 
 
- void sortTheFile(FILE *file,char b[]){
+ void sortTheFile(char b[]){
+	 	FILE *myFile;
 		file = fopen(b, "r");
 		int count=0;	   	
 		int num;
