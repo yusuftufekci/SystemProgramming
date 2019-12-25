@@ -154,7 +154,7 @@ int main(){
                 printHelp();
 	        }
 	 		else if (!strcmp(args[0],functions[1])){
-                sprintf(command,"%s %s %s","sh ShellFunction1.sh",args[1],args[2]);
+                sprintf(command,"%s %s","sh ShellFunction1.sh",args[1]);
                 system(command);
 	        }
             else if (!strcmp(args[0],functions[2])){
